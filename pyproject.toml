@@ -4,14 +4,24 @@ version = "0.1.0"
 description = "Fine-tuning a 22M-parameter sentence embedder for ESCO skill linking, evaluated on public benchmarks and shipped as int8 ONNX"
 requires-python = ">=3.12"
 license = "MIT"
+# torch 2.2.2 is the last build for Intel Macs; workrb declares torch>=2.6, so it
+# installs with --no-deps (see README) and its own dependencies are listed here.
 dependencies = [
-  "sentence-transformers",
-  "workrb",
+  "torch==2.2.2",
+  "numpy<2",
+  "transformers<5",
+  "sentence-transformers<6",
   "datasets",
   "onnxruntime",
-  "optimum",
-  "numpy",
   "scipy",
+  "appdirs",
+  "pandas",
+  "pydantic",
+  "pyyaml",
+  "rank-bm25",
+  "rapidfuzz",
+  "requests",
+  "scikit-learn",
 ]
 
 [project.optional-dependencies]

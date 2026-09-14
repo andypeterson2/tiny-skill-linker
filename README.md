@@ -17,6 +17,17 @@ The plan is in [docs/plan.md](docs/plan.md). No results yet.
 | 5 | Ablation: weight interpolation (WiSE-FT) vs general retrieval | not started |
 | 6 | int8 export and regression check | not started |
 
+## Setup
+
+```bash
+python3.12 -m venv .venv
+.venv/bin/pip install -r requirements.lock
+.venv/bin/pip install --no-deps workrb==0.6.0
+.venv/bin/pip install --no-deps -e .
+```
+
+`requirements.lock` pins every version the results were produced with. torch 2.2.2 is the last release built for Intel Macs. WorkRB declares torch ≥ 2.6, but its evaluation code runs on 2.2.2; the calibration in step 1 checks that.
+
 ## Data and attribution
 
 - **Evaluation:** TechWolf's ESCO skill-linking test sets (TECH, HOUSE, TECHWOLF), CC-BY-4.0, run through [WorkRB](https://github.com/techwolf-ai/WorkRB).
