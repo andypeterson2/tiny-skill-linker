@@ -11,11 +11,31 @@ The plan is in [docs/plan.md](docs/plan.md). No results yet.
 | Step | What | Status |
 |---|---|---|
 | 1 | Calibrate the evaluation harness against the published baseline | done: stock all-mpnet-base-v2 reproduces the paper's RP@5 (39.60 / 26.17 / 33.48 vs 39.6 / 26.2 / 33.5) |
-| 2 | Zero-shot baselines, fp32 and int8 | not started |
+| 2 | Zero-shot baselines, fp32 and int8 | done |
 | 3 | Fine-tune MiniLM on synthetic ESCO sentences, 3 seeds | not started |
 | 4 | Ablation: skills held out of training | not started |
 | 5 | Ablation: weight interpolation (WiSE-FT) vs general retrieval | not started |
 | 6 | int8 export and regression check | not started |
+
+## Results so far
+
+Stock models, RP@5 and MRR (×100), ranking all 13,891 ESCO 1.1.0 skills per sentence. Test queries: TECH 338, HOUSE 262, TECHWOLF 326.
+
+| Model | Params | Precision | TECH RP@5 | HOUSE RP@5 | TECHWOLF RP@5 | TECH MRR | HOUSE MRR | TECHWOLF MRR |
+|---|---|---|---|---|---|---|---|---|
+| all-mpnet-base-v2 | 110M | fp32 | 39.60 | 26.17 | 33.48 | 38.76 | 26.27 | 29.58 |
+| all-MiniLM-L6-v2 | 22M | fp32 | 45.57 | 33.85 | 36.74 | 43.48 | 33.21 | 35.23 |
+| all-MiniLM-L6-v2 | 22M | int8 | 45.56 | 34.31 | 36.17 | 43.29 | 31.90 | 35.06 |
+| all-MiniLM-L6-v2 (transformers.js q8 file) | 22M | int8 | 46.78 | 33.69 | 38.24 | 44.20 | 33.17 | 35.61 |
+| bge-small-en-v1.5 + query prefix | 33M | fp32 | 44.81 | 31.92 | 34.58 | 44.75 | 32.15 | 33.42 |
+| bge-small-en-v1.5 + query prefix | 33M | int8 | 45.30 | 31.04 | 34.76 | 44.55 | 31.16 | 32.91 |
+| snowflake-arctic-embed-xs + query prefix | 22M | fp32 | 43.07 | 30.15 | 30.63 | 40.56 | 28.85 | 28.52 |
+| snowflake-arctic-embed-xs + query prefix | 22M | int8 | 42.74 | 29.01 | 29.61 | 40.71 | 28.53 | 28.70 |
+
+- **Calibration:** the paper reports 39.6 / 26.2 / 33.5 RP@5 for stock all-mpnet-base-v2, and this harness reproduces them.
+- **Stock MiniLM beats stock mpnet:** at a fifth of the size, it scores higher on all three sets. The baseline for fine-tuning is therefore stock MiniLM, not the paper's stock row.
+- **Query prefixes** for bge and arctic were chosen on the TECH and HOUSE validation splits (`results/val/`), by mean RP@5.
+- **int8 export:** `scripts/export_int8.py` uses per-channel weights with reduced range. That setting's embeddings match the transformers.js q8 file most closely (mean cosine 0.988 over 2,000 ESCO skill names, not test data), and it stays within 0.6 RP@5 of fp32.
 
 ## Setup
 

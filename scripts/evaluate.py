@@ -60,13 +60,16 @@ def main() -> None:
     ap.add_argument("--label", default=None)
     ap.add_argument("--split", choices=["test", "val"], required=True)
     ap.add_argument("--tasks", nargs="+", default=list(TASKS))
+    ap.add_argument("--onnx-file", default=None, help="e.g. onnx/model_int8.onnx")
     args = ap.parse_args()
 
     names = [t for t in args.tasks if args.split == "test" or t in VAL_TASKS]
     tasks = [
         TASKS[n][0](split=args.split, languages=["en"], esco_version=ESCO_VERSION) for n in names
     ]
-    model = PromptedBiEncoder(args.model, query_prompt=args.query_prompt, label=args.label)
+    model = PromptedBiEncoder(
+        args.model, query_prompt=args.query_prompt, label=args.label, onnx_file=args.onnx_file
+    )
 
     run_dir = ROOT / "runs" / args.split / model.name
     start = time.time()
@@ -95,7 +98,10 @@ def main() -> None:
         "label": model.name,
         "query_prompt": args.query_prompt,
         "split": args.split,
-        "precision": "fp32",
+        "precision": "int8"
+        if args.onnx_file and ("int8" in args.onnx_file or "quantized" in args.onnx_file)
+        else "fp32",
+        "backend": f"onnx:{args.onnx_file}" if args.onnx_file else "torch",
         "scores": scores,
         "provenance": {
             "esco_version": ESCO_VERSION,

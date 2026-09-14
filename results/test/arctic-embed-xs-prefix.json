@@ -1,0 +1,56 @@
+{
+  "model": "Snowflake/snowflake-arctic-embed-xs",
+  "label": "arctic-embed-xs-prefix",
+  "query_prompt": "Represent this sentence for searching relevant passages: ",
+  "split": "test",
+  "precision": "fp32",
+  "backend": "torch",
+  "scores": {
+    "tech": {
+      "n_queries": 338,
+      "n_targets": 13891,
+      "rp@5": 0.4306706114398422,
+      "rp@10": 0.5143491124260355,
+      "mrr": 0.4055585164672576,
+      "map": 0.34025857340804677
+    },
+    "house": {
+      "n_queries": 262,
+      "n_targets": 13891,
+      "rp@5": 0.3015267175572519,
+      "rp@10": 0.3797709923664122,
+      "mrr": 0.28850262935848536,
+      "map": 0.21412685069288578
+    },
+    "techwolf": {
+      "n_queries": 326,
+      "n_targets": 13891,
+      "rp@5": 0.3063394683026585,
+      "rp@10": 0.39584063686824417,
+      "mrr": 0.28519728671979155,
+      "map": 0.22985177224063766
+    }
+  },
+  "provenance": {
+    "esco_version": "1.1.0",
+    "model_revision": "d8c86521100d3556476a063fc2342036d45c106f",
+    "dataset_revisions": {
+      "tech": "5f0cb05df03cd1cd5048ff1d64639bf9bd4cb36f",
+      "house": "dcb313cad615a8f5148ef5addc01ef090fc9f295",
+      "techwolf": "ed83e50ff6bc7e44008e98a82f6143ddaf59a255"
+    },
+    "code": {
+      "sha": "eae7c8bbe7cffd31adf5dcc2caa7458964676590",
+      "dirty": true
+    },
+    "versions": {
+      "workrb": "0.6.0",
+      "sentence-transformers": "5.7.0",
+      "transformers": "4.57.6",
+      "torch": "2.2.2",
+      "datasets": "5.0.1"
+    },
+    "machine": "macOS-15.7.9-x86_64-i386-64bit",
+    "seconds": 66.9
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "model": "BAAI/bge-small-en-v1.5",
+  "label": "bge-small-prefix",
+  "query_prompt": "Represent this sentence for searching relevant passages: ",
+  "split": "test",
+  "precision": "fp32",
+  "backend": "torch",
+  "scores": {
+    "tech": {
+      "n_queries": 338,
+      "n_targets": 13891,
+      "rp@5": 0.44807692307692304,
+      "rp@10": 0.5388067061143984,
+      "mrr": 0.4474533909387955,
+      "map": 0.3637027222477115
+    },
+    "house": {
+      "n_queries": 262,
+      "n_targets": 13891,
+      "rp@5": 0.31921119592875313,
+      "rp@10": 0.3994380831212892,
+      "mrr": 0.3215111611883492,
+      "map": 0.24027698039142512
+    },
+    "techwolf": {
+      "n_queries": 326,
+      "n_targets": 13891,
+      "rp@5": 0.3458077709611452,
+      "rp@10": 0.41764168857727135,
+      "mrr": 0.3341833514949564,
+      "map": 0.27665168573127347
+    }
+  },
+  "provenance": {
+    "esco_version": "1.1.0",
+    "model_revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+    "dataset_revisions": {
+      "tech": "5f0cb05df03cd1cd5048ff1d64639bf9bd4cb36f",
+      "house": "dcb313cad615a8f5148ef5addc01ef090fc9f295",
+      "techwolf": "ed83e50ff6bc7e44008e98a82f6143ddaf59a255"
+    },
+    "code": {
+      "sha": "eae7c8bbe7cffd31adf5dcc2caa7458964676590",
+      "dirty": true
+    },
+    "versions": {
+      "workrb": "0.6.0",
+      "sentence-transformers": "5.7.0",
+      "transformers": "4.57.6",
+      "torch": "2.2.2",
+      "datasets": "5.0.1"
+    },
+    "machine": "macOS-15.7.9-x86_64-i386-64bit",
+    "seconds": 104.6
+  }
+}
