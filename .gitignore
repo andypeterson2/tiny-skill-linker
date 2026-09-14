@@ -1,0 +1,18 @@
+# Hidden files
+.*
+!.git*
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Downloaded data, model weights and run outputs
+data/
+models/
+runs/
+*.onnx
+*.safetensors
+
+# Private evaluation data never enters this repo
+private/
