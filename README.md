@@ -19,7 +19,7 @@ The plan is in [docs/plan.md](docs/plan.md). No results yet.
 
 ## Results so far
 
-Stock models, RP@5 and MRR (×100), ranking all 13,891 ESCO 1.1.0 skills per sentence. Test queries: TECH 338, HOUSE 262, TECHWOLF 326.
+Stock and fine-tuned models, RP@5 and MRR (×100), ranking all 13,891 ESCO 1.1.0 skills per sentence. Test queries: TECH 338, HOUSE 262, TECHWOLF 326.
 
 | Model | Params | Precision | TECH RP@5 | HOUSE RP@5 | TECHWOLF RP@5 | TECH MRR | HOUSE MRR | TECHWOLF MRR |
 |---|---|---|---|---|---|---|---|---|
