@@ -1,0 +1,28 @@
+[project]
+name = "tiny-skill-linker"
+version = "0.1.0"
+description = "Fine-tuning a 22M-parameter sentence embedder for ESCO skill linking, evaluated on public benchmarks and shipped as int8 ONNX"
+requires-python = ">=3.12"
+license = "MIT"
+dependencies = [
+  "sentence-transformers",
+  "workrb",
+  "datasets",
+  "onnxruntime",
+  "optimum",
+  "numpy",
+  "scipy",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
