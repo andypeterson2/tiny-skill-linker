@@ -1,0 +1,47 @@
+{
+  "model": "models/wise-seed1-a0.25",
+  "label": "wise-seed1-a0.25",
+  "query_prompt": "",
+  "split": "val",
+  "precision": "fp32",
+  "backend": "torch",
+  "scores": {
+    "tech": {
+      "n_queries": 75,
+      "n_targets": 13891,
+      "rp@5": 0.6237777777777778,
+      "rp@10": 0.7004444444444444,
+      "mrr": 0.5907651955753929,
+      "map": 0.5001331336013916
+    },
+    "house": {
+      "n_queries": 61,
+      "n_targets": 13891,
+      "rp@5": 0.519672131147541,
+      "rp@10": 0.6191256830601093,
+      "mrr": 0.5139523467943259,
+      "map": 0.40858897626865115
+    }
+  },
+  "provenance": {
+    "esco_version": "1.1.0",
+    "model_revision": null,
+    "dataset_revisions": {
+      "tech": "5f0cb05df03cd1cd5048ff1d64639bf9bd4cb36f",
+      "house": "dcb313cad615a8f5148ef5addc01ef090fc9f295"
+    },
+    "code": {
+      "sha": "214c0b563313b9c474b9cac1c8b89d0e560ecb7e",
+      "dirty": true
+    },
+    "versions": {
+      "workrb": "0.6.0",
+      "sentence-transformers": "5.7.0",
+      "transformers": "4.57.6",
+      "torch": "2.2.2",
+      "datasets": "5.0.1"
+    },
+    "machine": "macOS-15.7.9-x86_64-i386-64bit",
+    "seconds": 45.0
+  }
+}
