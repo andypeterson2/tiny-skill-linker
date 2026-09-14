@@ -1,0 +1,47 @@
+{
+  "model": "BAAI/bge-small-en-v1.5",
+  "label": "bge-small-prefix",
+  "query_prompt": "Represent this sentence for searching relevant passages: ",
+  "split": "val",
+  "precision": "fp32",
+  "backend": "torch",
+  "scores": {
+    "tech": {
+      "n_queries": 75,
+      "n_targets": 13891,
+      "rp@5": 0.5893333333333333,
+      "rp@10": 0.6715555555555556,
+      "mrr": 0.5905093919079069,
+      "map": 0.4672882782425504
+    },
+    "house": {
+      "n_queries": 61,
+      "n_targets": 13891,
+      "rp@5": 0.4103825136612022,
+      "rp@10": 0.5057377049180328,
+      "mrr": 0.3944824121465682,
+      "map": 0.31283025911138024
+    }
+  },
+  "provenance": {
+    "esco_version": "1.1.0",
+    "model_revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+    "dataset_revisions": {
+      "tech": "5f0cb05df03cd1cd5048ff1d64639bf9bd4cb36f",
+      "house": "dcb313cad615a8f5148ef5addc01ef090fc9f295"
+    },
+    "code": {
+      "sha": "eae7c8bbe7cffd31adf5dcc2caa7458964676590",
+      "dirty": true
+    },
+    "versions": {
+      "workrb": "0.6.0",
+      "sentence-transformers": "5.7.0",
+      "transformers": "4.57.6",
+      "torch": "2.2.2",
+      "datasets": "5.0.1"
+    },
+    "machine": "macOS-15.7.9-x86_64-i386-64bit",
+    "seconds": 52.3
+  }
+}

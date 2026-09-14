@@ -1,0 +1,56 @@
+{
+  "model": "models/arctic-xs",
+  "label": "arctic-embed-xs-prefix-int8",
+  "query_prompt": "Represent this sentence for searching relevant passages: ",
+  "split": "test",
+  "precision": "int8",
+  "backend": "onnx:onnx/model_int8.onnx",
+  "scores": {
+    "tech": {
+      "n_queries": 338,
+      "n_targets": 13891,
+      "rp@5": 0.4273668639053254,
+      "rp@10": 0.5119822485207101,
+      "mrr": 0.4070583684039376,
+      "map": 0.3417233197203483
+    },
+    "house": {
+      "n_queries": 262,
+      "n_targets": 13891,
+      "rp@5": 0.2900763358778626,
+      "rp@10": 0.3630407124681934,
+      "mrr": 0.285254692231574,
+      "map": 0.2128975161217506
+    },
+    "techwolf": {
+      "n_queries": 326,
+      "n_targets": 13891,
+      "rp@5": 0.29611451942740286,
+      "rp@10": 0.38295720128542216,
+      "mrr": 0.286999000366298,
+      "map": 0.22784523643028037
+    }
+  },
+  "provenance": {
+    "esco_version": "1.1.0",
+    "model_revision": null,
+    "dataset_revisions": {
+      "tech": "5f0cb05df03cd1cd5048ff1d64639bf9bd4cb36f",
+      "house": "dcb313cad615a8f5148ef5addc01ef090fc9f295",
+      "techwolf": "ed83e50ff6bc7e44008e98a82f6143ddaf59a255"
+    },
+    "code": {
+      "sha": "eae7c8bbe7cffd31adf5dcc2caa7458964676590",
+      "dirty": true
+    },
+    "versions": {
+      "workrb": "0.6.0",
+      "sentence-transformers": "5.7.0",
+      "transformers": "4.57.6",
+      "torch": "2.2.2",
+      "datasets": "5.0.1"
+    },
+    "machine": "macOS-15.7.9-x86_64-i386-64bit",
+    "seconds": 58.4
+  }
+}

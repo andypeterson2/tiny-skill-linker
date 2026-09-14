@@ -1,0 +1,56 @@
+{
+  "model": "models/minilm",
+  "label": "all-MiniLM-L6-v2-int8",
+  "query_prompt": "",
+  "split": "test",
+  "precision": "int8",
+  "backend": "onnx:onnx/model_int8.onnx",
+  "scores": {
+    "tech": {
+      "n_queries": 338,
+      "n_targets": 13891,
+      "rp@5": 0.4555719921104536,
+      "rp@10": 0.5499342537804076,
+      "mrr": 0.43291405214386847,
+      "map": 0.36350343412404934
+    },
+    "house": {
+      "n_queries": 262,
+      "n_targets": 13891,
+      "rp@5": 0.3431297709923664,
+      "rp@10": 0.4213528413910093,
+      "mrr": 0.31899371552803485,
+      "map": 0.2397314851325586
+    },
+    "techwolf": {
+      "n_queries": 326,
+      "n_targets": 13891,
+      "rp@5": 0.36165644171779143,
+      "rp@10": 0.4532537248028046,
+      "mrr": 0.35055751524845746,
+      "map": 0.2944745547133555
+    }
+  },
+  "provenance": {
+    "esco_version": "1.1.0",
+    "model_revision": null,
+    "dataset_revisions": {
+      "tech": "5f0cb05df03cd1cd5048ff1d64639bf9bd4cb36f",
+      "house": "dcb313cad615a8f5148ef5addc01ef090fc9f295",
+      "techwolf": "ed83e50ff6bc7e44008e98a82f6143ddaf59a255"
+    },
+    "code": {
+      "sha": "eae7c8bbe7cffd31adf5dcc2caa7458964676590",
+      "dirty": true
+    },
+    "versions": {
+      "workrb": "0.6.0",
+      "sentence-transformers": "5.7.0",
+      "transformers": "4.57.6",
+      "torch": "2.2.2",
+      "datasets": "5.0.1"
+    },
+    "machine": "macOS-15.7.9-x86_64-i386-64bit",
+    "seconds": 72.2
+  }
+}

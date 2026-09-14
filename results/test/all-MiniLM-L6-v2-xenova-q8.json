@@ -1,0 +1,56 @@
+{
+  "model": "Xenova/all-MiniLM-L6-v2",
+  "label": "all-MiniLM-L6-v2-xenova-q8",
+  "query_prompt": "",
+  "split": "test",
+  "precision": "int8",
+  "backend": "onnx:onnx/model_quantized.onnx (the file transformers.js loads for dtype q8)",
+  "scores": {
+    "tech": {
+      "n_queries": 338,
+      "n_targets": 13891,
+      "rp@5": 0.4677514792899408,
+      "rp@10": 0.5471236028928336,
+      "mrr": 0.44201686162299764,
+      "map": 0.3688099799200103
+    },
+    "house": {
+      "n_queries": 262,
+      "n_targets": 13891,
+      "rp@5": 0.33689567430025447,
+      "rp@10": 0.4134860050890585,
+      "mrr": 0.3317155195458527,
+      "map": 0.2432228317665087
+    },
+    "techwolf": {
+      "n_queries": 326,
+      "n_targets": 13891,
+      "rp@5": 0.38236196319018406,
+      "rp@10": 0.44635188431200706,
+      "mrr": 0.3560698445339421,
+      "map": 0.2961897161903448
+    }
+  },
+  "provenance": {
+    "esco_version": "1.1.0",
+    "model_revision": null,
+    "dataset_revisions": {
+      "tech": "5f0cb05df03cd1cd5048ff1d64639bf9bd4cb36f",
+      "house": "dcb313cad615a8f5148ef5addc01ef090fc9f295",
+      "techwolf": "ed83e50ff6bc7e44008e98a82f6143ddaf59a255"
+    },
+    "code": {
+      "sha": "eae7c8bbe7cffd31adf5dcc2caa7458964676590",
+      "dirty": true
+    },
+    "versions": {
+      "workrb": "0.6.0",
+      "sentence-transformers": "5.7.0",
+      "transformers": "4.57.6",
+      "torch": "2.2.2",
+      "datasets": "5.0.1"
+    },
+    "machine": "macOS-15.7.9-x86_64-i386-64bit",
+    "seconds": 57.8
+  }
+}

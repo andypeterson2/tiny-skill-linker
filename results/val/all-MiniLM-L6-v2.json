@@ -1,0 +1,46 @@
+{
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "label": "all-MiniLM-L6-v2",
+  "query_prompt": "",
+  "split": "val",
+  "precision": "fp32",
+  "scores": {
+    "tech": {
+      "n_queries": 75,
+      "n_targets": 13891,
+      "rp@5": 0.5304444444444444,
+      "rp@10": 0.6648888888888888,
+      "mrr": 0.5296220904121653,
+      "map": 0.4340101471717292
+    },
+    "house": {
+      "n_queries": 61,
+      "n_targets": 13891,
+      "rp@5": 0.4814207650273224,
+      "rp@10": 0.5576502732240437,
+      "mrr": 0.4404629290961907,
+      "map": 0.33694397505674034
+    }
+  },
+  "provenance": {
+    "esco_version": "1.1.0",
+    "model_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "dataset_revisions": {
+      "tech": "5f0cb05df03cd1cd5048ff1d64639bf9bd4cb36f",
+      "house": "dcb313cad615a8f5148ef5addc01ef090fc9f295"
+    },
+    "code": {
+      "sha": "eae7c8bbe7cffd31adf5dcc2caa7458964676590",
+      "dirty": false
+    },
+    "versions": {
+      "workrb": "0.6.0",
+      "sentence-transformers": "5.7.0",
+      "transformers": "4.57.6",
+      "torch": "2.2.2",
+      "datasets": "5.0.1"
+    },
+    "machine": "macOS-15.7.9-x86_64-i386-64bit",
+    "seconds": 30.6
+  }
+}
