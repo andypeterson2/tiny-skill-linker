@@ -1,0 +1,55 @@
+{
+  "model": "sentence-transformers/all-mpnet-base-v2",
+  "label": "all-mpnet-base-v2",
+  "query_prompt": "",
+  "split": "test",
+  "precision": "fp32",
+  "scores": {
+    "tech": {
+      "n_queries": 338,
+      "n_targets": 13891,
+      "rp@5": 0.395956607495069,
+      "rp@10": 0.49786324786324787,
+      "mrr": 0.387572855160092,
+      "map": 0.3124176612545029
+    },
+    "house": {
+      "n_queries": 262,
+      "n_targets": 13891,
+      "rp@5": 0.26170483460559796,
+      "rp@10": 0.36763146734520774,
+      "mrr": 0.26265861316166644,
+      "map": 0.19330947584511
+    },
+    "techwolf": {
+      "n_queries": 326,
+      "n_targets": 13891,
+      "rp@5": 0.33476482617586917,
+      "rp@10": 0.4212751971954426,
+      "mrr": 0.29578572804782977,
+      "map": 0.2533897288997753
+    }
+  },
+  "provenance": {
+    "esco_version": "1.1.0",
+    "model_revision": "e8c3b32edf5434bc2275fc9bab85f82640a19130",
+    "dataset_revisions": {
+      "tech": "5f0cb05df03cd1cd5048ff1d64639bf9bd4cb36f",
+      "house": "dcb313cad615a8f5148ef5addc01ef090fc9f295",
+      "techwolf": "ed83e50ff6bc7e44008e98a82f6143ddaf59a255"
+    },
+    "code": {
+      "sha": "cf31c16a1d8a4f78b933b60aa7dac311b3529946",
+      "dirty": false
+    },
+    "versions": {
+      "workrb": "0.6.0",
+      "sentence-transformers": "5.7.0",
+      "transformers": "4.57.6",
+      "torch": "2.2.2",
+      "datasets": "5.0.1"
+    },
+    "machine": "macOS-15.7.9-x86_64-i386-64bit",
+    "seconds": 255.8
+  }
+}

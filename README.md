@@ -10,7 +10,7 @@ The plan is in [docs/plan.md](docs/plan.md). No results yet.
 
 | Step | What | Status |
 |---|---|---|
-| 1 | Calibrate the evaluation harness against the published baseline | not started |
+| 1 | Calibrate the evaluation harness against the published baseline | done: stock all-mpnet-base-v2 reproduces the paper's RP@5 (39.60 / 26.17 / 33.48 vs 39.6 / 26.2 / 33.5) |
 | 2 | Zero-shot baselines, fp32 and int8 | not started |
 | 3 | Fine-tune MiniLM on synthetic ESCO sentences, 3 seeds | not started |
 | 4 | Ablation: skills held out of training | not started |
