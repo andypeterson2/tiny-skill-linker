@@ -16,24 +16,12 @@ from pathlib import Path
 
 from huggingface_hub import HfApi
 from workrb import evaluate
-from workrb.tasks.ranking.skill_extraction import (
-    HouseSkillExtractRanking,
-    TechSkillExtractRanking,
-    TechWolfSkillExtractRanking,
-)
 
 from tiny_skill_linker.models import PromptedBiEncoder
+from tiny_skill_linker.tasks import ESCO_VERSION, TASKS, VAL_TASKS, load_task
 
 ROOT = Path(__file__).resolve().parent.parent
-TASKS = {
-    "tech": (TechSkillExtractRanking, "TechWolf/skill-extraction-tech"),
-    "house": (HouseSkillExtractRanking, "TechWolf/skill-extraction-house"),
-    "techwolf": (TechWolfSkillExtractRanking, "TechWolf/skill-extraction-techwolf"),
-}
-# TECHWOLF ships a test split only.
-VAL_TASKS = ("tech", "house")
 METRICS = ["rp@5", "rp@10", "mrr", "map"]
-ESCO_VERSION = "1.1.0"
 
 
 def git_state() -> dict:
@@ -64,9 +52,7 @@ def main() -> None:
     args = ap.parse_args()
 
     names = [t for t in args.tasks if args.split == "test" or t in VAL_TASKS]
-    tasks = [
-        TASKS[n][0](split=args.split, languages=["en"], esco_version=ESCO_VERSION) for n in names
-    ]
+    tasks = [load_task(n, args.split) for n in names]
     model = PromptedBiEncoder(
         args.model, query_prompt=args.query_prompt, label=args.label, onnx_file=args.onnx_file
     )
