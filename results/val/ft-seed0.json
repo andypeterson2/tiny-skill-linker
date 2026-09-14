@@ -1,0 +1,47 @@
+{
+  "model": "models/ft-seed0",
+  "label": "ft-seed0",
+  "query_prompt": "",
+  "split": "val",
+  "precision": "fp32",
+  "backend": "torch",
+  "scores": {
+    "tech": {
+      "n_queries": 75,
+      "n_targets": 13891,
+      "rp@5": 0.6837777777777777,
+      "rp@10": 0.7926666666666667,
+      "mrr": 0.6930555730555731,
+      "map": 0.5999477208784079
+    },
+    "house": {
+      "n_queries": 61,
+      "n_targets": 13891,
+      "rp@5": 0.5499999999999999,
+      "rp@10": 0.6797814207650272,
+      "mrr": 0.5379271643175167,
+      "map": 0.44955618435521333
+    }
+  },
+  "provenance": {
+    "esco_version": "1.1.0",
+    "model_revision": null,
+    "dataset_revisions": {
+      "tech": "5f0cb05df03cd1cd5048ff1d64639bf9bd4cb36f",
+      "house": "dcb313cad615a8f5148ef5addc01ef090fc9f295"
+    },
+    "code": {
+      "sha": "37e87cc65500293f6edf2faa9196e1fd7a13a317",
+      "dirty": true
+    },
+    "versions": {
+      "workrb": "0.6.0",
+      "sentence-transformers": "5.7.0",
+      "transformers": "4.57.6",
+      "torch": "2.2.2",
+      "datasets": "5.0.1"
+    },
+    "machine": "macOS-15.7.9-x86_64-i386-64bit",
+    "seconds": 41.7
+  }
+}
