@@ -13,9 +13,9 @@ The plan is in [docs/plan.md](docs/plan.md). No results yet.
 | 1 | Calibrate the evaluation harness against the published baseline | done: stock all-mpnet-base-v2 reproduces the paper's RP@5 (39.60 / 26.17 / 33.48 vs 39.6 / 26.2 / 33.5) |
 | 2 | Zero-shot baselines, fp32 and int8 | done |
 | 3 | Fine-tune MiniLM on synthetic ESCO sentences, 3 seeds | done (fp32) |
-| 4 | Ablation: skills held out of training | not started |
+| 4 | Ablation: skills held out of training | done (1 seed) |
 | 5 | Ablation: weight interpolation (WiSE-FT) vs general retrieval | not started |
-| 6 | int8 export and regression check | not started |
+| 6 | int8 export and regression check | int8 done; regression check not started |
 
 ## Results so far
 
@@ -32,13 +32,29 @@ Stock and fine-tuned models, RP@5 and MRR (×100), ranking all 13,891 ESCO 1.1.0
 | snowflake-arctic-embed-xs + query prefix | 22M | fp32 | 43.07 | 30.15 | 30.63 | 40.56 | 28.85 | 28.52 |
 | snowflake-arctic-embed-xs + query prefix | 22M | int8 | 42.74 | 29.01 | 29.61 | 40.71 | 28.53 | 28.70 |
 | **all-MiniLM-L6-v2, fine-tuned (3 seeds, mean ± sd)** | 22M | fp32 | 53.80 ± 0.88 | 46.62 ± 0.93 | 47.66 ± 0.48 | 53.18 ± 0.53 | 45.54 ± 0.78 | 48.02 ± 0.76 |
+| **all-MiniLM-L6-v2, fine-tuned (3 seeds, mean ± sd)** | 22M | int8 | 53.79 ± 1.51 | 45.40 ± 0.79 | 46.45 ± 0.84 | 52.81 ± 0.46 | 45.06 ± 1.01 | 47.73 ± 0.80 |
 | Decorte et al. best fine-tuned all-mpnet-base-v2 (published) | 110M | fp32 | 54.62 | 45.74 | 54.57 | 52.85 | 42.75 | 52.55 |
 
 - **Calibration:** the paper reports 39.6 / 26.2 / 33.5 RP@5 for stock all-mpnet-base-v2, and this harness reproduces them.
 - **Stock MiniLM beats stock mpnet:** at a fifth of the size, it scores higher on all three sets. The baseline for fine-tuning is therefore stock MiniLM, not the paper's stock row.
 - **Query prefixes** for bge and arctic were chosen on the TECH and HOUSE validation splits (`results/val/`), by mean RP@5.
 - **Fine-tuning** uses `scripts/train.py` with the paper's recipe (MNRL, scale 20, one epoch, batch 64, 2e-5, 5% warmup, sentence-pair augmentation), plus no-duplicate batches. Each seed trains for about 73 minutes on CPU. Against stock MiniLM, every seed improves RP@5 by 7–14 points on every test set; the paired-bootstrap 95% intervals all exclude zero (`scripts/compare.py diff`). The 22M model reaches 98%, 102% and 87% of the paper's 110M fine-tuned RP@5 on TECH, HOUSE and TECHWOLF.
+- **Fine-tuned int8:** quantizing costs 0 to 1.2 RP@5 and at most 0.5 MRR (mean over seeds), leaving the int8 model 8 to 12 RP@5 above stock.
 - **int8 export:** `scripts/export_int8.py` uses per-channel weights with reduced range. That setting's embeddings match the transformers.js q8 file most closely (mean cosine 0.988 over 2,000 ESCO skill names, not test data), and it stays within 0.6 RP@5 of fp32.
+
+### Skills never seen in training
+
+`ft-holdout-seed0` is trained with the same recipe, but 2,765 of the 13,826 synthetic-data skills (20%, chosen at random) and all of their sentences are removed. On the test sets, each (sentence, gold skill) pair is then scored as seen or unseen by that model. Hit@5 means the gold skill is ranked in the top 5 of 13,891. The results are from `scripts/unseen.py`.
+
+| Model | Seen skills hit@5 (n=1,414) | Unseen skills hit@5 (n=282) |
+|---|---|---|
+| all-MiniLM-L6-v2, stock | 31.40 | 33.69 |
+| Fine-tuned on all skills (seed 0) | 41.73 | 43.26 |
+| Fine-tuned with those skills held out (seed 0) | 41.44 | 41.84 |
+
+- **Against stock,** the held-out model gains +8.16 hit@5 on skills it never saw (95% CI [+3.55, +12.77], paired bootstrap over pairs), against +10.04 on skills it saw.
+- **Against the model that saw those skills,** it is 1.42 hit@5 lower on them (95% CI [−3.55, +0.71]). Most of the fine-tuning gain therefore carries over to skills with no training sentences, which is what an open tag vocabulary needs.
+- **Caveat:** this is a single seed, and only 282 test pairs involve held-out skills.
 
 ## Setup
 
