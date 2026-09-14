@@ -15,38 +15,18 @@ from pathlib import Path
 
 import numpy as np
 
+from tiny_skill_linker.perquery import write_perquery
 from tiny_skill_linker.tasks import TASKS, VAL_TASKS, load_task
 
 ROOT = Path(__file__).resolve().parent.parent
-K = 5
 RESAMPLES = 10_000
-
-
-def per_query(scores: dict, gold: list[list[int]]) -> dict[str, list[float]]:
-    rp, rr = [], []
-    for q, positives in enumerate(gold):
-        row = scores[str(q)]
-        order = sorted(row, key=lambda t: -row[t])
-        ranks = {int(t): i for i, t in enumerate(order)}
-        hits = sum(1 for p in positives if ranks[p] < K)
-        rp.append(hits / min(K, len(positives)))
-        rr.append(1.0 / (1 + min(ranks[p] for p in positives)))
-    return {"rp@5": rp, "rr": rr}
 
 
 def cmd_perquery(split: str, label: str) -> None:
     names = [n for n in TASKS if split == "test" or n in VAL_TASKS]
-    out = {}
-    for name in names:
-        task = load_task(name, split)
-        ranking = ROOT / "runs" / split / label / "rankings" / label
-        path = ranking / f"{task.name.replace(' ', '_')}__en.json"
-        artifact = json.loads(path.read_text())
-        out[name] = per_query(artifact["scores"], task.datasets["en"].target_indices)
-        print(f"{name}: RP@5 {np.mean(out[name]['rp@5']):.4f}  MRR {np.mean(out[name]['rr']):.4f}")
-    dest = ROOT / "results" / split / "perquery" / f"{label}.json"
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    dest.write_text(json.dumps(out) + "\n")
+    dest = write_perquery(ROOT, split, label, {n: load_task(n, split) for n in names})
+    for name, scores in json.loads(dest.read_text()).items():
+        print(f"{name}: RP@5 {np.mean(scores['rp@5']):.4f}  MRR {np.mean(scores['rr']):.4f}")
 
 
 def cmd_diff(split: str, a: str, b: str, seed: int = 0) -> None:

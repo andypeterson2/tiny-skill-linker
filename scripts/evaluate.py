@@ -9,6 +9,7 @@ Usage:
 import argparse
 import json
 import platform
+import shutil
 import subprocess
 import time
 from importlib.metadata import version
@@ -18,6 +19,7 @@ from huggingface_hub import HfApi
 from workrb import evaluate
 
 from tiny_skill_linker.models import PromptedBiEncoder
+from tiny_skill_linker.perquery import write_perquery
 from tiny_skill_linker.tasks import ESCO_VERSION, TASKS, VAL_TASKS, load_task
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -102,6 +104,10 @@ def main() -> None:
             "seconds": round(elapsed, 1),
         },
     }
+    # Full rankings run to ~150 MB per task; keep only the per-query scores.
+    write_perquery(ROOT, args.split, model.name, dict(zip(names, tasks, strict=True)))
+    shutil.rmtree(run_dir / "rankings")
+
     dest = ROOT / "results" / args.split / f"{model.name}.json"
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(json.dumps(out, indent=2) + "\n")
