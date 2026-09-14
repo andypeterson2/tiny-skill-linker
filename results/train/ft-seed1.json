@@ -1,0 +1,25 @@
+{
+  "base": "sentence-transformers/all-MiniLM-L6-v2",
+  "out": "models/ft-seed1",
+  "seed": 1,
+  "epochs": 1.0,
+  "max_steps": -1,
+  "lr": 2e-05,
+  "batch_size": 64,
+  "augment": true,
+  "holdout_frac": 0.0,
+  "n_train_pairs": 138260,
+  "n_skills_trained": 13826,
+  "heldout_skills": [],
+  "provenance": {
+    "dataset": "TechWolf/Synthetic-ESCO-skill-sentences",
+    "dataset_revision": "09fc487d1394c1fdfd224cb621a89b14af925716",
+    "code_sha": "b9e270d90bba6448a6ef846f5879b70056647c60",
+    "versions": {
+      "sentence-transformers": "5.7.0",
+      "transformers": "4.57.6",
+      "torch": "2.2.2"
+    },
+    "seconds": 4257.8
+  }
+}
