@@ -14,8 +14,8 @@ The plan is in [docs/plan.md](docs/plan.md). No results yet.
 | 2 | Zero-shot baselines, fp32 and int8 | done |
 | 3 | Fine-tune MiniLM on synthetic ESCO sentences, 3 seeds | done (fp32) |
 | 4 | Ablation: skills held out of training | done (1 seed) |
-| 5 | Ablation: weight interpolation (WiSE-FT) vs general retrieval | not started |
-| 6 | int8 export and regression check | int8 done; regression check not started |
+| 5 | Ablation: weight interpolation (WiSE-FT) vs general retrieval | done: no blend needed |
+| 6 | int8 export and regression check | done |
 
 ## Results so far
 
@@ -55,6 +55,31 @@ Stock and fine-tuned models, RP@5 and MRR (×100), ranking all 13,891 ESCO 1.1.0
 - **Against stock,** the held-out model gains +8.16 hit@5 on skills it never saw (95% CI [+3.55, +12.77], paired bootstrap over pairs), against +10.04 on skills it saw.
 - **Against the model that saw those skills,** it is 1.42 hit@5 lower on them (95% CI [−3.55, +0.71]). Most of the fine-tuning gain therefore carries over to skills with no training sentences, which is what an open tag vocabulary needs.
 - **Caveat:** this is a single seed, and only 282 test pairs involve held-out skills.
+
+### Weight interpolation and general retrieval
+
+Seed 1 (best mean validation RP@5) blended with stock MiniLM, θ(α) = (1−α)·θ_stock + α·θ_fine-tuned. The rule, fixed before the sweep, picks the best mean validation RP@5 among blends that keep at least 95% of stock's NanoBEIR NDCG@10.
+
+| α | Validation RP@5, TECH | HOUSE | Mean | NanoBEIR NDCG@10 | Share of stock's |
+|---|---|---|---|---|---|
+| 0 (stock) | 53.04 | 48.14 | 50.59 | 56.24 | 100.0% |
+| 0.25 | 62.38 | 51.97 | 57.17 | 56.30 | 100.1% |
+| 0.5 | 66.93 | 56.07 | 61.50 | 56.10 | 99.8% |
+| 0.75 | 67.71 | 55.49 | 61.60 | 55.81 | 99.2% |
+| 1 (seed 1) | 69.71 | 57.54 | 63.63 | 55.11 | 98.0% |
+
+Fine-tuning costs 2% of stock's NanoBEIR score, and every blend trades validation RP@5 for less than that, so α = 1 is chosen and needs no further test scoring.
+
+### Transfer to a private résumé-tagging set
+
+This check scores a different task: 68 private résumé bullets, each to be tagged from 26 broad, hyphenated category tags (such as `system-architecture` and `leadership`). It has a single annotator. The text is not published; the set's SHA-256 begins `5db062ebb3c52b39`. Both models are int8 in transformers.js, ranking bare tag names. The check was run once, after the model was chosen.
+
+| Model | hit@1 | hit@3 | MRR |
+|---|---|---|---|
+| all-MiniLM-L6-v2, stock (transformers.js q8) | 0.603 | 0.868 | 0.735 |
+| Fine-tuned seed 1, int8 | 0.559 | 0.809 | 0.705 |
+
+The fine-tuned model is not better on this set. Against stock, hit@3 is −0.059 (95% CI [−0.133, 0.000], cluster bootstrap) and MRR −0.031 ([−0.084, +0.021]). By bullet, it is better on 1 and worse on 5 (McNemar p = 0.22). It gains on tags named like concrete skills (`latex-documents`, `testing`, `model-evaluation`) and loses on broad categories (`system-architecture`, `backend-api`, `documentation`). That fits training on fine-grained ESCO skill names. Skill linking improves, but the gain doesn't carry over to coarse category tagging, so the deployed tagger keeps the stock model.
 
 ## Setup
 

@@ -1,0 +1,26 @@
+{
+  "model": "models/wise-seed1-a0.5",
+  "label": "wise-seed1-a0.5",
+  "ndcg@10": {
+    "NanoClimateFEVER_cosine_ndcg@10": 0.3014944017477836,
+    "NanoDBPedia_cosine_ndcg@10": 0.5429809243081006,
+    "NanoFEVER_cosine_ndcg@10": 0.8112146350031607,
+    "NanoFiQA2018_cosine_ndcg@10": 0.4527402077999308,
+    "NanoHotpotQA_cosine_ndcg@10": 0.6206215021292953,
+    "NanoMSMARCO_cosine_ndcg@10": 0.5712528532521796,
+    "NanoNFCorpus_cosine_ndcg@10": 0.34179765012828456,
+    "NanoNQ_cosine_ndcg@10": 0.5758712923786831,
+    "NanoQuoraRetrieval_cosine_ndcg@10": 0.9326373050468724,
+    "NanoSCIDOCS_cosine_ndcg@10": 0.42114887860359734,
+    "NanoArguAna_cosine_ndcg@10": 0.5593345231096254,
+    "NanoSciFact_cosine_ndcg@10": 0.7090878790446868,
+    "NanoTouche2020_cosine_ndcg@10": 0.4529597348400688,
+    "NanoBEIR_mean_cosine_ndcg@10": 0.5610109067224823
+  },
+  "versions": {
+    "sentence-transformers": "5.7.0",
+    "transformers": "4.57.6",
+    "torch": "2.2.2"
+  },
+  "seconds": 1207.9
+}
