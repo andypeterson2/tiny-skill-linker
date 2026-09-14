@@ -1,0 +1,56 @@
+{
+  "model": "models/ft-seed1",
+  "label": "ft-seed1",
+  "query_prompt": "",
+  "split": "test",
+  "precision": "fp32",
+  "backend": "torch",
+  "scores": {
+    "tech": {
+      "n_queries": 338,
+      "n_targets": 13891,
+      "rp@5": 0.5419132149901381,
+      "rp@10": 0.6285338593030901,
+      "mrr": 0.5332052433200808,
+      "map": 0.44264768792469106
+    },
+    "house": {
+      "n_queries": 262,
+      "n_targets": 13891,
+      "rp@5": 0.4680025445292621,
+      "rp@10": 0.5370865139949108,
+      "mrr": 0.45107246428774783,
+      "map": 0.3468716257650758
+    },
+    "techwolf": {
+      "n_queries": 326,
+      "n_targets": 13891,
+      "rp@5": 0.47592024539877303,
+      "rp@10": 0.5593972149186873,
+      "mrr": 0.4858164383525011,
+      "map": 0.39621435544568456
+    }
+  },
+  "provenance": {
+    "esco_version": "1.1.0",
+    "model_revision": null,
+    "dataset_revisions": {
+      "tech": "5f0cb05df03cd1cd5048ff1d64639bf9bd4cb36f",
+      "house": "dcb313cad615a8f5148ef5addc01ef090fc9f295",
+      "techwolf": "ed83e50ff6bc7e44008e98a82f6143ddaf59a255"
+    },
+    "code": {
+      "sha": "b9e270d90bba6448a6ef846f5879b70056647c60",
+      "dirty": true
+    },
+    "versions": {
+      "workrb": "0.6.0",
+      "sentence-transformers": "5.7.0",
+      "transformers": "4.57.6",
+      "torch": "2.2.2",
+      "datasets": "5.0.1"
+    },
+    "machine": "macOS-15.7.9-x86_64-i386-64bit",
+    "seconds": 71.7
+  }
+}
