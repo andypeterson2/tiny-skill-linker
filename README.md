@@ -6,8 +6,6 @@ The model ranks a skill vocabulary for each sentence by cosine similarity. Becau
 
 ## Status
 
-The plan is in [docs/plan.md](docs/plan.md). No results yet.
-
 | Step | What | Status |
 |---|---|---|
 | 1 | Calibrate the evaluation harness against the published baseline | done: stock all-mpnet-base-v2 reproduces the paper's RP@5 (39.60 / 26.17 / 33.48 vs 39.6 / 26.2 / 33.5) |
