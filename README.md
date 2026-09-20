@@ -19,6 +19,10 @@ The model ranks a skill vocabulary for each sentence by cosine similarity. Becau
 
 Stock and fine-tuned models, RP@5 and MRR (×100), ranking all 13,891 ESCO 1.1.0 skills per sentence. Test queries: TECH 338, HOUSE 262, TECHWOLF 326.
 
+Every row is one `scripts/evaluate.py` run, stored under `results/test/` with the library versions, dataset revisions and machine that produced it. The other tables below come from `scripts/unseen.py`, `scripts/wise.py` with `scripts/nanobeir.py`, and `scripts/tagging_eval.py`. The shipped model is laid out by `scripts/package_tjs.py`.
+
+Each result also records a digest of the code and the weights it ran, so a row stays checkable when the commit it names is no longer reachable. Every row was re-run under that scheme and reproduced its earlier scores byte for byte. Model weights are not committed — they are rebuilt by `scripts/train.py` and `scripts/wise.py`, or downloaded — so reproducing a fine-tuned row from a clean clone means retraining that seed, about 72 minutes on CPU.
+
 | Model | Params | Precision | TECH RP@5 | HOUSE RP@5 | TECHWOLF RP@5 | TECH MRR | HOUSE MRR | TECHWOLF MRR |
 |---|---|---|---|---|---|---|---|---|
 | all-mpnet-base-v2 | 110M | fp32 | 39.60 | 26.17 | 33.48 | 38.76 | 26.27 | 29.58 |
@@ -36,9 +40,10 @@ Stock and fine-tuned models, RP@5 and MRR (×100), ranking all 13,891 ESCO 1.1.0
 - **Calibration:** the paper reports 39.6 / 26.2 / 33.5 RP@5 for stock all-mpnet-base-v2, and this harness reproduces them.
 - **Stock MiniLM beats stock mpnet:** at a fifth of the size, it scores higher on all three sets. The baseline for fine-tuning is therefore stock MiniLM, not the paper's stock row.
 - **Query prefixes** for bge and arctic were chosen on the TECH and HOUSE validation splits (`results/val/`), by mean RP@5.
-- **Fine-tuning** uses `scripts/train.py` with the paper's recipe (MNRL, scale 20, one epoch, batch 64, 2e-5, 5% warmup, sentence-pair augmentation), plus no-duplicate batches. Each seed trains for about 73 minutes on CPU. Against stock MiniLM, every seed improves RP@5 by 7–14 points on every test set; the paired-bootstrap 95% intervals all exclude zero (`scripts/compare.py diff`). The 22M model reaches 98%, 102% and 87% of the paper's 110M fine-tuned RP@5 on TECH, HOUSE and TECHWOLF.
+- **Fine-tuning** uses `scripts/train.py` with the paper's recipe (MNRL, scale 20, one epoch, batch 64, 2e-5, 5% warmup, sentence-pair augmentation), plus no-duplicate batches. Each seed trains for about 72 minutes on CPU. Against stock MiniLM, every seed improves RP@5 by 7–14 points on every test set; the paired-bootstrap 95% intervals all exclude zero (`scripts/compare.py diff`, written to `results/test/diff/`). The 22M model reaches 98%, 102% and 87% of the paper's 110M fine-tuned RP@5 on TECH, HOUSE and TECHWOLF.
 - **Fine-tuned int8:** quantizing costs 0 to 1.2 RP@5 and at most 0.5 MRR (mean over seeds), leaving the int8 model 8 to 12 RP@5 above stock.
-- **int8 export:** `scripts/export_int8.py` uses per-channel weights with reduced range. That setting's embeddings match the transformers.js q8 file most closely (mean cosine 0.988 over 2,000 ESCO skill names, not test data), and it stays within 0.6 RP@5 of fp32.
+- **int8 export:** `scripts/export_int8.py` uses per-channel weights with reduced range. That setting's embeddings match the transformers.js q8 file most closely: mean cosine 0.988 and lowest 0.967 over 2,000 ESCO skill names, not test data (`scripts/export_fidelity.py`, `results/fidelity/`). On stock MiniLM it costs at most 0.6 RP@5 against fp32, which `all-MiniLM-L6-v2-onnx-fp32` in the table pins: the fp32 ONNX export scores exactly what the torch model does.
+- **No training sentence appears in an evaluation set.** `scripts/overlap.py` reports zero overlap, exact and after normalising case and punctuation, on all five splits (`results/overlap.json`).
 
 ### Skills never seen in training
 
@@ -47,12 +52,12 @@ Stock and fine-tuned models, RP@5 and MRR (×100), ranking all 13,891 ESCO 1.1.0
 | Model | Seen skills hit@5 (n=1,414) | Unseen skills hit@5 (n=282) |
 |---|---|---|
 | all-MiniLM-L6-v2, stock | 31.40 | 33.69 |
-| Fine-tuned on all skills (seed 0) | 41.73 | 43.26 |
+| Fine-tuned on all skills (3 seeds, mean ± sd) | 41.82 ± 0.50 | 43.03 ± 0.41 |
 | Fine-tuned with those skills held out (seed 0) | 41.44 | 41.84 |
 
 - **Against stock,** the held-out model gains +8.16 hit@5 on skills it never saw (95% CI [+3.55, +12.77], paired bootstrap over pairs), against +10.04 on skills it saw.
-- **Against the model that saw those skills,** it is 1.42 hit@5 lower on them (95% CI [−3.55, +0.71]). Most of the fine-tuning gain therefore carries over to skills with no training sentences, which is what an open tag vocabulary needs.
-- **Caveat:** this is a single seed, and only 282 test pairs involve held-out skills.
+- **Against the models that saw those skills,** it is 1.18 hit@5 lower on them than their mean, and between 0.71 and 1.42 lower than any single seed (95% CIs [−3.19, +1.77], [−3.55, +0.71] and [−3.90, +1.06] for seeds 1, 0 and 2). Every interval includes zero. Most of the fine-tuning gain therefore carries over to skills with no training sentences, which is what an open tag vocabulary needs.
+- **Caveat:** the held-out run is a single seed, and only 282 test pairs involve held-out skills. The models it is compared against cover three seeds, so the spread on that side is known; the spread on the held-out side is not. All four comparisons are stored under `results/test/unseen/`.
 
 ### Weight interpolation and general retrieval
 
@@ -79,6 +84,8 @@ This check scores a different task: 68 private résumé bullets, each to be tagg
 
 The fine-tuned model is not better on this set. Against stock, hit@3 is −0.059 (95% CI [−0.133, 0.000], cluster bootstrap) and MRR −0.031 ([−0.084, +0.021]). By bullet, it is better on 1 and worse on 5 (McNemar p = 0.22). It gains on tags named like concrete skills (`latex-documents`, `testing`, `model-evaluation`) and loses on broad categories (`system-architecture`, `backend-api`, `documentation`). That fits training on fine-grained ESCO skill names. Skill linking improves, but the gain doesn't carry over to coarse category tagging, so the deployed tagger keeps the stock model.
 
+`scripts/tagging_eval.py` runs this check on any tagging set: it takes a JSONL of texts and gold tags, a tag list, and a model, and writes the metrics and the input file's SHA-256 — never the text — to `results/tagging/`. The private set is not in this repository, so the numbers above cannot be reproduced from it alone; the method can.
+
 ## Setup
 
 ```bash
@@ -88,7 +95,16 @@ python3.12 -m venv .venv
 .venv/bin/pip install --no-deps -e .
 ```
 
-`requirements.lock` pins every version the results were produced with. torch 2.2.2 is the last release built for Intel Macs. WorkRB declares torch ≥ 2.6, but its evaluation code runs on 2.2.2; the calibration in step 1 checks that.
+`requirements.lock` pins every version the results were produced with, apart from WorkRB, which installs separately above because it declares torch ≥ 2.6. torch 2.2.2 is the last release built for Intel Macs; WorkRB's evaluation code runs on it, and the calibration in step 1 checks that. The dependency list in `pyproject.toml` documents what WorkRB and this code need — the lock file is what installs.
+
+Tests and lint:
+
+```bash
+.venv/bin/pytest
+.venv/bin/ruff check scripts src tests
+```
+
+`pytest` checks the committed results against each other: every per-query file must reproduce the aggregate WorkRB recorded beside it, and must declare the schema it was written under. It needs no model and no network.
 
 ## Data and attribution
 

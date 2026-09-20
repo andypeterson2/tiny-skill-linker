@@ -1,0 +1,35 @@
+{
+  "label": "int8-vs-xenova-q8",
+  "a": {
+    "model": "models/minilm",
+    "onnx_file": "onnx/model_int8.onnx"
+  },
+  "b": {
+    "model": "models/xenova",
+    "onnx_file": "onnx/model_quantized.onnx"
+  },
+  "n_names": 2000,
+  "cosine": {
+    "mean": 0.9885080456733704,
+    "min": 0.9667322635650635,
+    "p05": 0.9832078814506531
+  },
+  "provenance": {
+    "esco_version": "1.1.0",
+    "source": "ESCO skill names from the tech test target space",
+    "a_weights_digest": "e65d6db3970da0af0aa494414c661c2405c62a6f7da02f81ac239b94388fdb97",
+    "b_weights_digest": "afdb6f1a0e45b715d0bb9b11772f032c399babd23bfc31fed1c170afc848bdb1",
+    "code": {
+      "sha": "a86ab27ad0ca6050a410ece31bebe611183129c9",
+      "dirty": false,
+      "code_digest": "5cba39adee955188d8a4debf5f0174281828554621dedc372740a58f89b62fd1"
+    },
+    "versions": {
+      "onnxruntime": "1.23.2",
+      "transformers": "4.57.6",
+      "torch": "2.2.2"
+    },
+    "machine": "macOS-15.7.9-x86_64-i386-64bit",
+    "seconds": 4.5
+  }
+}

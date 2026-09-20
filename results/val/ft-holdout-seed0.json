@@ -5,6 +5,7 @@
   "split": "val",
   "precision": "fp32",
   "backend": "torch",
+  "note": null,
   "scores": {
     "tech": {
       "n_queries": 75,
@@ -26,13 +27,15 @@
   "provenance": {
     "esco_version": "1.1.0",
     "model_revision": null,
+    "weights_digest": "75c047b18d969ca2e153d309ceeeb95bc0dec210947c656feb157454fb8c3d8f",
     "dataset_revisions": {
       "tech": "5f0cb05df03cd1cd5048ff1d64639bf9bd4cb36f",
       "house": "dcb313cad615a8f5148ef5addc01ef090fc9f295"
     },
     "code": {
-      "sha": "1e10c3dbc10385249860751b29e6a3a279b232cc",
-      "dirty": true
+      "sha": "45de037ed0b3b7658fbe2ad4266eb72b106dcd22",
+      "dirty": false,
+      "code_digest": "5cba39adee955188d8a4debf5f0174281828554621dedc372740a58f89b62fd1"
     },
     "versions": {
       "workrb": "0.6.0",
@@ -42,6 +45,6 @@
       "datasets": "5.0.1"
     },
     "machine": "macOS-15.7.9-x86_64-i386-64bit",
-    "seconds": 33.7
+    "seconds": 22.2
   }
 }
