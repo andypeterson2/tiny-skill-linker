@@ -17,10 +17,36 @@
     "NanoTouche2020_cosine_ndcg@10": 0.43701773150982715,
     "NanoBEIR_mean_cosine_ndcg@10": 0.5581264931758043
   },
-  "versions": {
-    "sentence-transformers": "5.7.0",
-    "transformers": "4.57.6",
-    "torch": "2.2.2"
-  },
-  "seconds": 1189.9
+  "provenance": {
+    "weights_digest": "f415064eaaa567dfa4ecc8ebbc55341ad747ccb24329db4449bf5497c25562c9",
+    "dataset": "sentence-transformers/NanoBEIR-en",
+    "dataset_revision": "beb106fbcfaa599c508c667041bf8c85fd78736b",
+    "subsets": [
+      "ArguAna",
+      "ClimateFEVER",
+      "DBPedia",
+      "FEVER",
+      "FiQA2018",
+      "HotpotQA",
+      "MSMARCO",
+      "NFCorpus",
+      "NQ",
+      "QuoraRetrieval",
+      "SCIDOCS",
+      "SciFact",
+      "Touche2020"
+    ],
+    "code": {
+      "sha": "f83dfaad896f6ba8dea7e18294ac06a56f424e92",
+      "dirty": false,
+      "code_digest": "5cba39adee955188d8a4debf5f0174281828554621dedc372740a58f89b62fd1"
+    },
+    "versions": {
+      "sentence-transformers": "5.7.0",
+      "transformers": "4.57.6",
+      "torch": "2.2.2"
+    },
+    "machine": "macOS-15.7.9-x86_64-i386-64bit",
+    "seconds": 982.8
+  }
 }
