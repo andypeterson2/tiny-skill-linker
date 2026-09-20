@@ -4,6 +4,8 @@
   "query_prompt": "",
   "split": "test",
   "precision": "fp32",
+  "backend": "torch",
+  "note": null,
   "scores": {
     "tech": {
       "n_queries": 338,
@@ -33,14 +35,16 @@
   "provenance": {
     "esco_version": "1.1.0",
     "model_revision": "e8c3b32edf5434bc2275fc9bab85f82640a19130",
+    "weights_digest": null,
     "dataset_revisions": {
       "tech": "5f0cb05df03cd1cd5048ff1d64639bf9bd4cb36f",
       "house": "dcb313cad615a8f5148ef5addc01ef090fc9f295",
       "techwolf": "ed83e50ff6bc7e44008e98a82f6143ddaf59a255"
     },
     "code": {
-      "sha": "cf31c16a1d8a4f78b933b60aa7dac311b3529946",
-      "dirty": false
+      "sha": "a86ab27ad0ca6050a410ece31bebe611183129c9",
+      "dirty": false,
+      "code_digest": "5cba39adee955188d8a4debf5f0174281828554621dedc372740a58f89b62fd1"
     },
     "versions": {
       "workrb": "0.6.0",
@@ -50,6 +54,6 @@
       "datasets": "5.0.1"
     },
     "machine": "macOS-15.7.9-x86_64-i386-64bit",
-    "seconds": 255.8
+    "seconds": 248.3
   }
 }
