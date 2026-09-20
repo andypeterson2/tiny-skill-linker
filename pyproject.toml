@@ -4,8 +4,9 @@ version = "0.1.0"
 description = "Fine-tuning a 22M-parameter sentence embedder for ESCO skill linking, evaluated on public benchmarks and shipped as int8 ONNX"
 requires-python = ">=3.12"
 license = "MIT"
-# torch 2.2.2 is the last build for Intel Macs; workrb declares torch>=2.6, so it
-# installs with --no-deps (see README) and its own dependencies are listed here.
+# torch 2.2.2 is the last build for Intel Macs. workrb declares torch>=2.6, so it
+# installs with --no-deps and its own dependencies are listed here alongside this
+# project's. requirements.lock is the install path; this list is documentation.
 dependencies = [
   "torch==2.2.2",
   "numpy<2",
@@ -13,7 +14,9 @@ dependencies = [
   "sentence-transformers<6",
   "datasets",
   "onnxruntime",
-  "scipy",
+  "onnx",
+  "accelerate",
+  "huggingface-hub",
   "appdirs",
   "pandas",
   "pydantic",
@@ -26,6 +29,10 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest", "ruff"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
 
 [build-system]
 requires = ["setuptools>=69"]

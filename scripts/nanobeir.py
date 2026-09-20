@@ -9,14 +9,20 @@ Usage:
 
 import argparse
 import json
+import platform
 import time
 from importlib.metadata import version
 from pathlib import Path
 
+from huggingface_hub import HfApi
 from sentence_transformers import SentenceTransformer
 from sentence_transformers.evaluation import NanoBEIREvaluator
 
+from tiny_skill_linker.provenance import code_state, weights_digest
+
 ROOT = Path(__file__).resolve().parent.parent
+# NanoBEIREvaluator reads all 13 subsets from one dataset repository.
+DATASET = "sentence-transformers/NanoBEIR-en"
 
 
 def main() -> None:
@@ -28,13 +34,27 @@ def main() -> None:
     model = SentenceTransformer(args.model, device="cpu")
     start = time.time()
     scores = NanoBEIREvaluator(batch_size=64, show_progress_bar=False)(model)
+    elapsed = time.time() - start
     ndcg = {k: v for k, v in scores.items() if k.endswith("cosine_ndcg@10")}
+    subsets = sorted(
+        k.removeprefix("Nano").removesuffix("_cosine_ndcg@10") for k in ndcg if "mean" not in k
+    )
     out = {
         "model": args.model,
         "label": args.label,
         "ndcg@10": ndcg,
-        "versions": {p: version(p) for p in ("sentence-transformers", "transformers", "torch")},
-        "seconds": round(time.time() - start, 1),
+        "provenance": {
+            "weights_digest": weights_digest(args.model),
+            "dataset": DATASET,
+            "dataset_revision": HfApi().repo_info(DATASET, repo_type="dataset").sha,
+            "subsets": subsets,
+            "code": code_state(),
+            "versions": {
+                p: version(p) for p in ("sentence-transformers", "transformers", "torch")
+            },
+            "machine": platform.platform(),
+            "seconds": round(elapsed, 1),
+        },
     }
     dest = ROOT / "results" / "nanobeir" / f"{args.label}.json"
     dest.parent.mkdir(parents=True, exist_ok=True)

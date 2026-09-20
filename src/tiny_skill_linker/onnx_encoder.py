@@ -10,18 +10,12 @@ from transformers import AutoTokenizer
 
 
 class OnnxEncoder:
-    def __init__(
-        self,
-        model_dir: str,
-        onnx_file: str,
-        pooling: str | None = None,
-        max_seq_length: int | None = None,
-    ):
+    def __init__(self, model_dir: str, onnx_file: str):
         root = Path(model_dir)
         meta_path = root / "pooling.json"
         meta = json.loads(meta_path.read_text()) if meta_path.exists() else {}
-        self.pooling = pooling or meta.get("pooling", "mean")
-        self.max_seq_length = max_seq_length or meta.get("max_seq_length", 256)
+        self.pooling = meta.get("pooling", "mean")
+        self.max_seq_length = meta.get("max_seq_length", 256)
         self.tokenizer = AutoTokenizer.from_pretrained(str(root))
         opts = ort.SessionOptions()
         opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL

@@ -1,6 +1,8 @@
 {
   "holdout": "ft-holdout-seed0",
   "k": 5,
+  "n_heldout_skills": 2765,
+  "n_heldout_in_test_vocabulary": 2751,
   "models": {
     "all-MiniLM-L6-v2": {
       "seen": {
@@ -57,6 +59,13 @@
         0.1276595744680851
       ],
       "n": 282
+    }
+  },
+  "provenance": {
+    "code": {
+      "sha": "21b184c3f3ac34b18020a3e2edb8fdc9c0d657e0",
+      "dirty": true,
+      "code_digest": "ab8ba9b75f158433f1c198c0c648b0e83c8fc2b0c06b045b8f0d6dc71abf8d90"
     }
   }
 }

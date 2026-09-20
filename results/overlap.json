@@ -1,0 +1,46 @@
+{
+  "train_dataset": "TechWolf/Synthetic-ESCO-skill-sentences",
+  "n_train_sentences": 138257,
+  "splits": {
+    "test/tech": {
+      "n_queries": 338,
+      "n_exact_overlap": 0,
+      "n_normalised_overlap": 0,
+      "examples": []
+    },
+    "test/house": {
+      "n_queries": 262,
+      "n_exact_overlap": 0,
+      "n_normalised_overlap": 0,
+      "examples": []
+    },
+    "test/techwolf": {
+      "n_queries": 326,
+      "n_exact_overlap": 0,
+      "n_normalised_overlap": 0,
+      "examples": []
+    },
+    "val/tech": {
+      "n_queries": 75,
+      "n_exact_overlap": 0,
+      "n_normalised_overlap": 0,
+      "examples": []
+    },
+    "val/house": {
+      "n_queries": 61,
+      "n_exact_overlap": 0,
+      "n_normalised_overlap": 0,
+      "examples": []
+    }
+  },
+  "provenance": {
+    "esco_version": "1.1.0",
+    "code": {
+      "sha": "21b184c3f3ac34b18020a3e2edb8fdc9c0d657e0",
+      "dirty": true,
+      "code_digest": "5cba39adee955188d8a4debf5f0174281828554621dedc372740a58f89b62fd1"
+    },
+    "machine": "macOS-15.7.9-x86_64-i386-64bit",
+    "seconds": 17.4
+  }
+}

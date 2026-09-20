@@ -7,9 +7,9 @@ from workrb.tasks.ranking.skill_extraction import (
 )
 
 TASKS = {
-    "tech": (TechSkillExtractRanking, "TechWolf/skill-extraction-tech"),
-    "house": (HouseSkillExtractRanking, "TechWolf/skill-extraction-house"),
-    "techwolf": (TechWolfSkillExtractRanking, "TechWolf/skill-extraction-techwolf"),
+    "tech": TechSkillExtractRanking,
+    "house": HouseSkillExtractRanking,
+    "techwolf": TechWolfSkillExtractRanking,
 }
 # TECHWOLF ships a test split only.
 VAL_TASKS = ("tech", "house")
@@ -17,4 +17,4 @@ ESCO_VERSION = "1.1.0"
 
 
 def load_task(name: str, split: str):
-    return TASKS[name][0](split=split, languages=["en"], esco_version=ESCO_VERSION)
+    return TASKS[name](split=split, languages=["en"], esco_version=ESCO_VERSION)

@@ -16,6 +16,8 @@ from pathlib import Path
 
 import numpy as np
 
+from tiny_skill_linker.perquery import load_perquery
+from tiny_skill_linker.provenance import code_state
 from tiny_skill_linker.tasks import TASKS, load_task
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -24,7 +26,7 @@ RESAMPLES = 10_000
 
 
 def pairs(label: str, heldout: set[str], spaces: dict[str, list[str]]) -> list[dict]:
-    perquery = json.loads((ROOT / "results" / "test" / "perquery" / f"{label}.json").read_text())
+    perquery = load_perquery(ROOT, "test", label, need_ranks=True)
     out = []
     for task, scores in perquery.items():
         for q, (gold, ranks) in enumerate(zip(scores["gold"], scores["gold_ranks"], strict=True)):
@@ -56,9 +58,8 @@ def main() -> None:
     heldout = set(record["heldout_skills"])
     spaces = {n: load_task(n, "test").datasets["en"].target_space for n in TASKS}
     vocabulary = set(spaces["tech"])
-    print(
-        f"held-out skills: {len(heldout)}; of these in the ESCO test vocabulary: {len(heldout & vocabulary)}"
-    )
+    in_vocabulary = len(heldout & vocabulary)
+    print(f"held-out skills: {len(heldout)}; of these in the ESCO test vocabulary: {in_vocabulary}")
 
     table = {}
     for label in args.models:
@@ -88,14 +89,18 @@ def main() -> None:
             f"  [{100 * lo:+.2f}, {100 * hi:+.2f}]  n={len(d)}"
         )
 
-    dest = ROOT / "results" / "test" / f"unseen-{args.holdout}.json"
+    dest = ROOT / "results" / "test" / "unseen" / args.holdout / f"{args.a}-vs-{args.b}.json"
+    dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(
         json.dumps(
             {
                 "holdout": args.holdout,
                 "k": K,
+                "n_heldout_skills": len(heldout),
+                "n_heldout_in_test_vocabulary": in_vocabulary,
                 "models": table,
                 "diff": {"a": args.a, "b": args.b, **diffs},
+                "provenance": {"code": code_state()},
             },
             indent=2,
         )

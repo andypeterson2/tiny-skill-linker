@@ -71,4 +71,4 @@ class PromptedBiEncoder(ModelInterface):
         input_type: ModelInputType,
         target_input_type: ModelInputType | None = None,
     ) -> torch.Tensor:
-        return self._compute_rankings(texts, targets, input_type, target_input_type)
+        raise NotImplementedError("this model ranks a target space; it does not classify")

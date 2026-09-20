@@ -19,7 +19,9 @@ OPSET = 14
 
 
 def pooling_mode(model: SentenceTransformer) -> str:
-    pooling = next(m for m in model if type(m).__name__ == "Pooling")
+    pooling = next((m for m in model if type(m).__name__ == "Pooling"), None)
+    if pooling is None:
+        raise ValueError("model has no Pooling module; OnnxEncoder needs one to embed text")
     mode = pooling.get_config_dict()["pooling_mode"]
     if mode not in ("cls", "mean"):
         raise ValueError(f"unsupported pooling mode {mode!r}; OnnxEncoder handles cls and mean")
@@ -63,7 +65,6 @@ def main() -> None:
     meta = {
         "source": args.model,
         "pooling": pooling_mode(st),
-        "normalize": any(type(m).__name__ == "Normalize" for m in st),
         "max_seq_length": st.max_seq_length,
     }
     (out / "pooling.json").write_text(json.dumps(meta, indent=2) + "\n")

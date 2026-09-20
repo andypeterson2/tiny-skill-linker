@@ -12,7 +12,6 @@ Usage:
 import argparse
 import json
 import random
-import subprocess
 import time
 from importlib.metadata import version
 from pathlib import Path
@@ -26,6 +25,8 @@ from sentence_transformers import (
 )
 from sentence_transformers.sentence_transformer.losses import MultipleNegativesRankingLoss
 from sentence_transformers.training_args import BatchSamplers
+
+from tiny_skill_linker.provenance import code_state, weights_digest
 
 ROOT = Path(__file__).resolve().parent.parent
 DATASET = "TechWolf/Synthetic-ESCO-skill-sentences"
@@ -50,7 +51,6 @@ def main() -> None:
     ap.add_argument("--lr", type=float, default=2e-5)
     ap.add_argument("--batch-size", type=int, default=64)
     ap.add_argument("--no-augment", action="store_true")
-    ap.add_argument("--max-steps", type=int, default=-1, help="for timing runs only")
     args = ap.parse_args()
 
     rng = random.Random(args.seed)
@@ -71,7 +71,6 @@ def main() -> None:
     targs = SentenceTransformerTrainingArguments(
         output_dir=str(out / "checkpoints"),
         num_train_epochs=args.epochs,
-        max_steps=args.max_steps,
         per_device_train_batch_size=args.batch_size,
         learning_rate=args.lr,
         warmup_ratio=0.05,
@@ -89,15 +88,11 @@ def main() -> None:
     elapsed = time.time() - start
     model.save_pretrained(str(out))
 
-    sha = subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True
-    )
     record = {
         "base": args.base,
         "out": args.out,
         "seed": args.seed,
         "epochs": args.epochs,
-        "max_steps": args.max_steps,
         "lr": args.lr,
         "batch_size": args.batch_size,
         "augment": not args.no_augment,
@@ -108,7 +103,8 @@ def main() -> None:
         "provenance": {
             "dataset": DATASET,
             "dataset_revision": HfApi().repo_info(DATASET, repo_type="dataset").sha,
-            "code_sha": sha.stdout.strip(),
+            "weights_digest": weights_digest(str(out)),
+            "code": code_state(),
             "versions": {p: version(p) for p in ("sentence-transformers", "transformers", "torch")},
             "seconds": round(elapsed, 1),
         },
