@@ -7,10 +7,12 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 
-# Downloaded data, model weights and run outputs
-data/
-models/
-runs/
+# Downloaded data, model weights and run outputs. No trailing slash: these are
+# often symlinks to a store kept outside the repo, and a slash matches only
+# directories.
+data
+models
+runs
 *.onnx
 *.safetensors
 

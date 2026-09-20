@@ -21,7 +21,7 @@ Stock and fine-tuned models, RP@5 and MRR (×100), ranking all 13,891 ESCO 1.1.0
 
 Every row is one `scripts/evaluate.py` run, stored under `results/test/` with the library versions, dataset revisions and machine that produced it. The other tables below come from `scripts/unseen.py`, `scripts/wise.py` with `scripts/nanobeir.py`, and `scripts/tagging_eval.py`. The shipped model is laid out by `scripts/package_tjs.py`.
 
-Each result also records a digest of the code and the weights it ran, so a row stays checkable when the commit it names is no longer reachable. The stock and zero-shot rows carry that digest and were re-run to confirm they reproduce byte for byte. The fine-tuned and blended rows predate it: their weights are not committed, so they cannot be re-run without retraining, and they still name a commit from a rewritten history. Treat those rows as measured but not currently re-derivable.
+Each result also records a digest of the code and the weights it ran, so a row stays checkable when the commit it names is no longer reachable. Every row was re-run under that scheme and reproduced its earlier scores byte for byte. Model weights are not committed — they are rebuilt by `scripts/train.py` and `scripts/wise.py`, or downloaded — so reproducing a fine-tuned row from a clean clone means retraining that seed, about 72 minutes on CPU.
 
 | Model | Params | Precision | TECH RP@5 | HOUSE RP@5 | TECHWOLF RP@5 | TECH MRR | HOUSE MRR | TECHWOLF MRR |
 |---|---|---|---|---|---|---|---|---|
@@ -52,12 +52,12 @@ Each result also records a digest of the code and the weights it ran, so a row s
 | Model | Seen skills hit@5 (n=1,414) | Unseen skills hit@5 (n=282) |
 |---|---|---|
 | all-MiniLM-L6-v2, stock | 31.40 | 33.69 |
-| Fine-tuned on all skills (seed 0) | 41.73 | 43.26 |
+| Fine-tuned on all skills (3 seeds, mean ± sd) | 41.82 ± 0.50 | 43.03 ± 0.41 |
 | Fine-tuned with those skills held out (seed 0) | 41.44 | 41.84 |
 
 - **Against stock,** the held-out model gains +8.16 hit@5 on skills it never saw (95% CI [+3.55, +12.77], paired bootstrap over pairs), against +10.04 on skills it saw.
-- **Against the model that saw those skills,** it is 1.42 hit@5 lower on them (95% CI [−3.55, +0.71]). Most of the fine-tuning gain therefore carries over to skills with no training sentences, which is what an open tag vocabulary needs.
-- **Caveat:** this is a single seed, and only 282 test pairs involve held-out skills. Extending it to seeds 1 and 2 needs their per-query files regenerated, which needs the checkpoints retrained: model weights are not committed, and the files scored before `gold_ranks` was recorded carry `"schema": 1`. Both comparisons above are stored under `results/test/unseen/`.
+- **Against the models that saw those skills,** it is 1.18 hit@5 lower on them than their mean, and between 0.71 and 1.42 lower than any single seed (95% CIs [−3.19, +1.77], [−3.55, +0.71] and [−3.90, +1.06] for seeds 1, 0 and 2). Every interval includes zero. Most of the fine-tuning gain therefore carries over to skills with no training sentences, which is what an open tag vocabulary needs.
+- **Caveat:** the held-out run is a single seed, and only 282 test pairs involve held-out skills. The models it is compared against cover three seeds, so the spread on that side is known; the spread on the held-out side is not. All four comparisons are stored under `results/test/unseen/`.
 
 ### Weight interpolation and general retrieval
 
